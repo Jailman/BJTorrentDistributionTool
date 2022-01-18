@@ -1,0 +1,7 @@
+# slave任务总数，根据slave总数量修改
+TotalSlaves: '2'
+# master的消息端口监听地址，需保持和slave连接地址对应
+# 非必要不要更改
+MasterAddr: '0.0.0.0:61111'
+# tracker监听地址，制作种子和启动tracker时使用
+TrackerAddr: '0.0.0.0:6969'
