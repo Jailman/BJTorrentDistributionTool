@@ -15,7 +15,7 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"protocol"
+	"github.com/Jailman/protocol"
 	"io/ioutil"
 	"gopkg.in/yaml.v2"
 

@@ -17,7 +17,7 @@ import (
 	"os"
 	"os/signal"
 	"path"
-	"protocol"
+	"github.com/Jailman/protocol"
 	"gopkg.in/yaml.v2"
 )
 

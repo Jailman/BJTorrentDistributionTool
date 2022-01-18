@@ -11,7 +11,7 @@ import (
 	"math"
 	"net"
 	"os"
-	"protocol"
+	"github.com/Jailman/protocol"
 	"encoding/base64"
 	"crypto/md5"
 	"encoding/hex"
