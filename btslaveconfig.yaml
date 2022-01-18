@@ -1,2 +1,2 @@
 # master的连接地址
-MasterAddr: '10.9.3.132:61111'
+MasterAddr: '10.1.1.1:61111'
