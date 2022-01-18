@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/jackpal/Taipei-Torrent/torrent"
+	"github.com/Jailman/BJTorrentDistributionTool/torrent"
 	"golang.org/x/net/proxy"
 	"io"
 	"io/ioutil"
@@ -11,7 +11,7 @@ import (
 	"math"
 	"net"
 	"os"
-	"protocol"
+	"github.com/Jailman/protocol"
 	"encoding/base64"
 	"crypto/md5"
 	"encoding/hex"
@@ -23,7 +23,7 @@ import (
 // 3. 接收master命令开始bt下载
 // 4. 接收master命令终止bt下载
 
-//发送任务状态
+// 发送任务状态
 func handleConnection_SendStatus(conn net.Conn, mission string, status string) {
 
 	sendstatus := "{\"Mission\":\"" + mission + "\", \"Status\":\"" + status + "\"}"
@@ -31,7 +31,7 @@ func handleConnection_SendStatus(conn net.Conn, mission string, status string) {
 	conn.Write(protocol.Enpack([]byte(sendstatus)))
 
 	Log("Status sent.")
-	//defer conn.Close()
+	// defer conn.Close()
 
 }
 
@@ -40,7 +40,7 @@ func handleConnection_getMission(conn net.Conn) {
 	// 缓冲区，存储被截断的数据
 	tmpBuffer := make([]byte, 0)
 
-	//接收解包
+	// 接收解包
 	readerChannel := make(chan []byte, 16)
 	go reader(readerChannel, conn)
 
@@ -65,7 +65,7 @@ func Log(v ...interface{}) {
 	log.Println(v...)
 }
 
-//读取channel中的消息并作出相应的操作和回应
+// 读取channel中的消息并作出相应的操作和回应
 func reader(readerChannel chan []byte, conn net.Conn) {
 	quit := make(chan bool)
 	for {
@@ -87,7 +87,7 @@ func reader(readerChannel chan []byte, conn net.Conn) {
 				if dat["Mission"].(string) == "DownloadTorrent" {
 					Log("Received Mission: DownloadTorrent")
 					mission := "DownloadTorrent"
-					//接收种子，写入文件，校验md5
+					// 接收种子，写入文件，校验md5
 					torrentFilename := dat["TorrentFile"].(string)
 					decodeBytes, err := base64.StdEncoding.DecodeString(dat["TorrentContent"].(string))
 					if err != nil {
@@ -133,6 +133,7 @@ func reader(readerChannel chan []byte, conn net.Conn) {
 					mission := "StopBT"
 					status := "OK"
 					handleConnection_SendStatus(conn, mission, status)
+					conn.Close()
 					os.Exit(0)
 				}
 			} else {
@@ -142,7 +143,7 @@ func reader(readerChannel chan []byte, conn net.Conn) {
 	}
 }
 
-//文件md5值计算
+// 文件md5值计算
 func GetFileMd5(filename string) (string, error) {
 	file, err := os.Open(filename)
 	if err != nil {
@@ -159,14 +160,14 @@ func GetFileMd5(filename string) (string, error) {
 	return md5Str, nil
 }
 
-//bt客户端
+// bt客户端
 var (
 	cpuprofile    = "" //If not empty, collects CPU profile samples and writes the profile to the given file before the program exits
 	memprofile    = "" //If not empty, writes memory heap allocations to the given file before the program exits
 	createTorrent = "" //If not empty, creates a torrent file from the given root. Writes to stdout
 	createTracker = "" //Creates a tracker serving the given torrent file on the given address. Example --createTracker=:8080 to serve on port 8080.
 
-	port                = 7779        //Port to listen on. 0 means pick random port. Note that 6881 is blacklisted by some trackers.
+	port                = 7778        //Port to listen on. 0 means pick random port. Note that 6881 is blacklisted by some trackers.
 	fileDir             = "."         //path to directory where files are stored
 	seedRatio           = math.Inf(0) //Seed until ratio >= this value before quitting.
 	useDeadlockDetector = false       //Panic and print stack dumps when the program is stuck.
@@ -215,7 +216,7 @@ func parseTorrentFlags() (flags *torrent.TorrentFlags, err error) {
 	return
 }
 
-//bt启动函数
+// bt启动函数
 func Start_BT(torrentFile string) {
 	torrentFiles = []string{torrentFile}
 
@@ -233,7 +234,7 @@ func Start_BT(torrentFile string) {
 
 }
 
-//yaml文件内容影射的结构体，注意结构体成员要大写开头
+// yaml文件内容影射的结构体，注意结构体成员要大写开头
 type Config struct {
 	MasterAddr string `yaml:"MasterAddr"`
 }
@@ -253,7 +254,7 @@ func ReadYaml(configPath string) (config Config, err error) {
 }
 
 
-//main函数
+// main函数
 func main() {
 	configPath := "./btslaveconfig.yaml"
 	config, err := ReadYaml(configPath)
@@ -275,6 +276,6 @@ func main() {
 	}
 
 	Log("connect to server success")
-
+	
 	handleConnection_getMission(conn)
 }

@@ -1,7 +1,7 @@
 package maketorrent
 
 import (
-	"github.com/jackpal/Taipei-Torrent/torrent"
+	"github.com/Jailman/BJTorrentDistributionTool/torrent"
 	"log"
 	"os"
 )

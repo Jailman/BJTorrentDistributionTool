@@ -6,8 +6,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/jackpal/Taipei-Torrent/torrent"
-	"github.com/jackpal/Taipei-Torrent/tracker"
+	"github.com/Jailman/BJTorrentDistributionTool/torrent"
+	"github.com/Jailman/BJTorrentDistributionTool/tracker"
 	"golang.org/x/net/proxy"
 	"io"
 	"io/ioutil"
@@ -17,7 +17,7 @@ import (
 	"os"
 	"os/signal"
 	"path"
-	"protocol"
+	"github.com/Jailman/protocol"
 	"gopkg.in/yaml.v2"
 )
 
@@ -208,7 +208,7 @@ func handleConnection_SendMission(conn net.Conn, mission string) {
 	conn.Write(protocol.Enpack([]byte(mission)))
 	Log(mission)
 	Log("Mission sent.")
-	//defer conn.Close()
+	// defer conn.Close()
 }
 
 func handleConnection_getStatus(conn net.Conn, totalslave string, torrentfile string, torrentcontent string, torrentMD5 string) {
@@ -234,7 +234,7 @@ func handleConnection_getStatus(conn net.Conn, totalslave string, torrentfile st
 
 		tmpBuffer = protocol.Depack(append(tmpBuffer, buffer[:n]...), readerChannel)
 	}
-	//defer conn.Close()
+	// defer conn.Close()
 
 }
 
@@ -380,6 +380,7 @@ func main() {
 				}
 			}
 		}()
+		
 		// 向btslave发送命令和文件
 		for {
 			conn, err := netListen.Accept()
@@ -437,9 +438,10 @@ func main() {
 
 
 
-//ToDO:
-//添加使用说明
-//解决文件夹传输循环写入问题（问题：文件夹总是在当前创建的同种子名字一致的文件夹下）
+// ToDO:
+// 添加使用说明
+// 解决文件夹传输循环写入问题（问题：文件夹总是在当前创建的同种子名字一致的文件夹下）
+// 停止tracker任务和torrent但是不退出master的监听，等待新的任务
 
 
 // 使用：

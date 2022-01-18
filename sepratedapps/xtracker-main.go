@@ -6,8 +6,8 @@ import (
 	"os/signal"
 	"path"
 
-	"github.com/jackpal/Taipei-Torrent/torrent"
-	"github.com/jackpal/Taipei-Torrent/tracker"
+	"github.com/Jailman/BJTorrentDistributionTool/torrent"
+	"github.com/Jailman/BJTorrentDistributionTool/tracker"
 	"golang.org/x/net/proxy"
 )
 

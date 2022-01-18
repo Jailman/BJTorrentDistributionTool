@@ -4,7 +4,7 @@ import (
 	"log"
 	"math"
 	"os"
-	"github.com/jackpal/Taipei-Torrent/torrent"
+	"github.com/Jailman/BJTorrentDistributionTool/torrent"
 	"golang.org/x/net/proxy"
 )
 

@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/jackpal/Taipei-Torrent/torrent"
+	"github.com/Jailman/BJTorrentDistributionTool/torrent"
 	"golang.org/x/net/proxy"
 	"io"
 	"io/ioutil"
